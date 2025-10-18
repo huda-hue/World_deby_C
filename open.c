@@ -2,7 +2,165 @@
 #include <string.h>
 #include <stdbool.h>
 #include <stdlib.h>
+#include <time.h>
 #include "kalkulator.h"
+
+void games();
+bool bilangan_prima(int n);
+int* cariFaktor(int n, int *count);
+double kalkulator();
+void matematika();
+
+int main(void) {
+   char menu[][20] = {
+      "Matematika",
+      "Games"
+   };
+   short pilih;
+
+   printf("\n$$$ SELAMAT DATANG DI DUNIA DEBY $$$\n");
+   printf("-- Menu --\n");
+   for (int i = 1; i <= 2; i++) {
+      printf("%d. %s\n", i, menu[i-1]);
+   }
+
+   printf("Pilihanmu: ");
+   scanf("%d", &pilih);
+
+   if (pilih == 1) {
+      matematika();
+   } else if (pilih == 2) {
+      games();
+   }
+
+
+   return 0;
+}
+
+
+// FUNGSI-FUNGSI
+
+bool finger_game() {
+   char komponen[][10] = {
+      "Orang", // 0
+      "Semut", // 1
+      "Gajah" // 2
+   };
+   printf("Pilih salah satu di antara berikut ini:\n");
+   for (int i = 0; i < 3; i++) {
+      printf("%d. %s\n", i+1, komponen[i]);
+   }
+   srand(time(NULL)); // supaya hasil acak berbeda tiap kali program dijalankan
+   int computer_choice;
+   for (int i = 0; i < 3; i++) {
+      computer_choice = (rand() % 10); // hasil antara 1-3
+   }
+   int user_choice;
+   printf("Pilihanmu: ");
+   scanf("%d", &user_choice);
+   if (computer_choice == user_choice) {
+      printf("Tie!, Anda dan komputer punya pilihan yang sama\n");
+      exit(EXIT_FAILURE); // langsung keluar program
+   } else {
+      if (computer_choice < user_choice && (computer_choice != 0 || user_choice != 0)) {
+         return false;
+      } else if (computer_choice > user_choice && (computer_choice != 0 || user_choice != 0)) {
+         return true;
+      } else if (computer_choice == 0 && user_choice == 2) {
+         return true;
+      } else if (computer_choice == 2 && user_choice == 0) {
+         return false;
+      }
+   }
+}
+
+bool rsp_game() {
+   char komponen[][10] = {
+      "Batu", // 0
+      "Gunting", // 1
+      "Kertas" // 2
+   };
+   printf("Pilih salah satu di antara berikut ini:\n");
+   for (int i = 0; i < 3; i++) {
+      printf("%d. %s\n", i+1, komponen[i]);
+   }
+   srand(time(NULL)); // supaya hasil acak berbeda tiap kali program dijalankan
+   int computer_choice;
+   for (int i = 0; i < 3; i++) {
+      computer_choice = (rand() % 10); // hasil antara 1-3
+   }
+   int user_choice;
+   printf("Pilihanmu: ");
+   scanf("%d", &user_choice);
+   if (computer_choice == user_choice) {
+      printf("Tie!, Anda dan komputer punya pilihan yang sama\n");
+      exit(EXIT_FAILURE); // langsung keluar program
+   } else {
+      if (computer_choice < user_choice && (computer_choice != 0 || user_choice != 0)) {
+         return false;
+      } else if (computer_choice > user_choice && (computer_choice != 0 || user_choice != 0)) {
+         return true;
+      } else if (computer_choice == 0 && user_choice == 2) {
+         return true;
+      } else if (computer_choice == 2 && user_choice == 0) {
+         return false;
+      }
+   }
+}
+
+
+void games() {
+   char Menu2[][50] = {
+      "Rock-Scissor-Paper Game",
+      "Finger Game"
+   };
+   short pilih2;
+
+   printf("\n** MENU GAMES **\n");
+   for (int i = 0; i < 2; i++) {
+      printf("%d. %s\n", i+1, Menu2[i]);
+   }
+
+   printf("Pilihanmu: ");
+   scanf("%d", &pilih2);
+
+   if (pilih2 == 1) {
+      bool hasil1 = rsp_game();
+      if (hasil1 == true) {
+         printf("Anda menang!\n");
+      } else {
+         printf("Komputer menang!\n");
+      }
+   } else if (pilih2 == 2) {
+      bool hasil2 = finger_game();
+      if (hasil2 == true) {
+         printf("Anda menang!\n");
+      } else {
+         printf("Komputer menang!\n");
+      }
+   }
+}
+
+bool bilangan_prima(int n) {
+   if (n < 2) {
+      return false;
+   } else if (n == 2) {
+      return true;
+   } else {
+      int m = 2;
+      while (m<n) {
+         if (n%m == 0) {
+            return false;
+         } else {
+            if (m == n-1) {
+               return true;
+            }
+         }
+         m++;
+      }
+   }
+}
+
 
 int* cariFaktor(int n, int *count) {
    int *faktor = NULL; // belum ada memori yang dialokasikan
@@ -17,7 +175,7 @@ int* cariFaktor(int n, int *count) {
          // kondisi gagal realokasi
          if (faktor == NULL) {
             printf("Gagal alokasi memori\n");
-            exit(0);
+            exit(EXIT_FAILURE);
          }
          // simpan faktor baru ke array di posisi terakhir
          faktor[*count-1] = i;
@@ -26,74 +184,42 @@ int* cariFaktor(int n, int *count) {
    return faktor; // mengembalikan pointer ke array
 }
 
-bool bilangan_prima(int n) {
-   if (n < 2) {
-      return false;
-   } else if (n == 2) {
-      return true;
-   } else {
-      int m = 2;
-      while (m<n) {
-         if (n%m == 0) {
-            return false;
-            break;
-         } else {
-            if (m == n-1) {
-               return true;
-            }
-         }
-         m++;
-      }
-   }
-}
-
 double kalkulator() {
-   char operators[][50] = {
-      "Jumlah (+)",
-      "Kurang (-)",
-      "Selisih (| |)",
-      "Kali (*)",
-      "Bagi (/)"
-   };
-   short pilih1_1;
-   double a, b, hasil1_1;
-
-   printf("\n### SELAMAT DATANG DI KALKULATOR C ###\n");
-   printf("Berikut pilihan operator matematika:\n");
-   for (int i = 0; i < 5; i++) {
-      printf("%d. %s\n", i+1, operators[i]);
-   }
-
-   printf("Pilihanmu: ");
-   scanf("%d", &pilih1_1);
-
+   double a, b;
    printf("a: ");
    scanf("%lf", &a);
    printf("b: ");
    scanf("%lf", &b);
-
-   if (pilih1_1 == 1) {
-      hasil1_1 = jumlah(a, b);
-   } else if (pilih1_1 == 2) {
-      hasil1_1 = jumlah(a, -b);
-   } else if (pilih1_1 == 3) {
-      if (a >= b) {
-         hasil1_1 = jumlah(a, -b);
-      } else {
-         hasil1_1 = jumlah(b, -a);
-      }
-   } else if (pilih1_1 == 4) {
-      hasil1_1 = kali(a, b);
-   } else if (pilih1_1 == 5) {
-      if (b != 0) {
-         hasil1_1 = bagi(a, b);
-      } else {
-         printf("Undefined!\n");
-         return 1;
-      }
+   char operators[][20] = {
+      "Penjumlahan",
+      "Pengurangan",
+      "Selisih",
+      "Perkalian",
+      "Pembagian"
+   };
+   printf("Pilih salah satu operator di bawah ini:\n");
+   for (int i = 0; i < 5; i++) {
+      printf("%d. %s\n", i+1, operators[i]);
    }
-
-   printf("%s antara %.2lf dan %.2lf: %.2lf\n", operators[pilih1_1-1], a, b, hasil1_1);
+   printf("\n");
+   short pilih3;
+   printf("Pilihanmu: ");
+   scanf("%d", &pilih3);
+   if (pilih3 == 1) {
+      printf("a + b = %lf\n", jumlah(a, b));
+   } else if (pilih3 == 2) {
+      printf("a - b = %lf\n", jumlah(a, -b));
+   } else if (pilih3 == 3) {
+      if (a >= b) {
+         printf("|a - b| = %lf\n", jumlah(a, -b));
+      } else {
+         printf("|a - b| = %lf\n", jumlah(b, -a));
+      }
+   } else if (pilih3 == 4) {
+      printf("a * b = %lf\n", kali(a, b));
+   } else if (pilih3 == 5) {
+      printf("a / b = %.2lf\n", bagi(a, b));
+   }
 }
 
 void matematika() {
@@ -142,52 +268,4 @@ void matematika() {
       // bebaskan memori
       free(hasil);
    }
-}
-
-void games() {
-   char Menu2[][50] = {
-      "Rock-Scissor-Paper Game",
-      "Finger Game"
-   };
-   short pilih2;
-
-   printf("\n** MENU GAMES **\n");
-   for (int i = 1; i <= 2; i++) {
-      printf("%d. %s\n", i, Menu2[i]);
-   }
-
-   printf("Pilihanmu: ");
-   scanf("%d", &pilih2);
-
-   if (pilih2 == 1) {
-      //rsp_game();
-   } else if (pilih2 == 2) {
-      //finger_game();
-   }
-}
-
-int main(void) {
-   char menu[][20] = {
-      "Matematika",
-      "Games"
-   };
-   short pilih;
-
-   printf("\n$$$ SELAMAT DATANG DI DUNIA DEBY $$$\n");
-   printf("-- Menu --\n");
-   for (int i = 1; i <= 2; i++) {
-      printf("%d. %s\n", i, menu[i-1]);
-   }
-
-   printf("Pilihanmu: ");
-   scanf("%d", &pilih);
-
-   if (pilih == 1) {
-      matematika();
-   } else if (pilih == 2) {
-      games();
-   }
-
-
-   return 0;
 }
